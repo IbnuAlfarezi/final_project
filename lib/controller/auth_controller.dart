@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import '../components/custom_snackbar.dart'; // Import CustomSnackbar
 
 class AuthController extends GetxController {
   var isRegister = true.obs;
@@ -25,8 +26,7 @@ class AuthController extends GetxController {
     String confirmPassword = confirmPasswordController.text.trim();
 
     if (email.isEmpty || password.isEmpty) {
-      Get.snackbar("Error", "Email and password cannot be empty",
-          snackPosition: SnackPosition.BOTTOM);
+      CustomSnackbar.show("Error", "Email and password cannot be empty", isSuccess: false);
       return;
     }
 
@@ -35,23 +35,23 @@ class AuthController extends GetxController {
     try {
       if (isRegister.value) {
         if (password != confirmPassword) {
-          Get.snackbar("Error", "Passwords do not match",
-              snackPosition: SnackPosition.BOTTOM);
+          CustomSnackbar.show("Error", "Passwords do not match", isSuccess: false);
           isLoading.value = false;
           return;
         }
 
         await _auth.createUserWithEmailAndPassword(email: email, password: password);
-        Get.snackbar("Success", "Account created successfully",
-            snackPosition: SnackPosition.BOTTOM);
+        CustomSnackbar.show("Success", "Account created successfully", isSuccess: true);
+        emailController.clear();
+        passwordController.clear();
+        isRegister.value = false;
+        
       } else {
         await _auth.signInWithEmailAndPassword(email: email, password: password);
-        Get.snackbar("Success", "Login successful",
-            snackPosition: SnackPosition.BOTTOM);
+        CustomSnackbar.show("Success", "Login successful", isSuccess: true);
       }
     } on FirebaseAuthException catch (e) {
-      Get.snackbar("Error", e.message ?? "An error occurred",
-          snackPosition: SnackPosition.BOTTOM);
+      CustomSnackbar.show("Error", e.message ?? "An error occurred", isSuccess: false);
     }
 
     isLoading.value = false;
