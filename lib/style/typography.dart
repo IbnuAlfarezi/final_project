@@ -19,4 +19,24 @@ class AppTextStyles {
     fontWeight: FontWeight.normal,
     color: AppColors.splashHeading2,
   );
+  static TextStyle home = GoogleFonts.inter(
+    fontSize: 14,
+    fontWeight: FontWeight.normal,
+    color: AppColors.mainText,
+  );
+  static TextStyle jobTittle = GoogleFonts.inter(
+    fontSize: 14,
+    fontWeight: FontWeight.w600,
+    color: Colors.white,
+  );
+  static TextStyle jobText = GoogleFonts.inter(
+    fontSize: 11,
+    fontWeight: FontWeight.normal,
+    color: Colors.white,
+  );
+  static TextStyle homeTittle = GoogleFonts.inter(
+    fontSize: 20,
+    fontWeight: FontWeight.w600,
+    color: AppColors.mainColor,
+  );
 }

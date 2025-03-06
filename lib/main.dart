@@ -1,4 +1,5 @@
 import 'package:final_project/pages/index.dart';
+import 'package:final_project/pages/user/home.dart';
 import 'package:final_project/routes/app_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -25,7 +26,7 @@ class MainApp extends StatelessWidget {
         scaffoldBackgroundColor: Colors.white
       ),
       getPages: AppRoutes.routes, 
-      home: SplashScreen(),
+      home: HomePage(),
     );
   }
 }

@@ -1,3 +1,4 @@
+import 'package:final_project/routes/app_routes.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -49,6 +50,7 @@ class AuthController extends GetxController {
       } else {
         await _auth.signInWithEmailAndPassword(email: email, password: password);
         CustomSnackbar.show("Success", "Login successful", isSuccess: true);
+        Get.offAllNamed(AppRoutes.home);
       }
     } on FirebaseAuthException catch (e) {
       CustomSnackbar.show("Error", e.message ?? "An error occurred", isSuccess: false);
