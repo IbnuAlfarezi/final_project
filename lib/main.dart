@@ -26,7 +26,7 @@ class MainApp extends StatelessWidget {
         scaffoldBackgroundColor: Colors.white
       ),
       getPages: AppRoutes.routes, 
-      home: HomePage(),
+      home: SplashScreen(),
     );
   }
 }

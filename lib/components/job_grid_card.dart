@@ -1,4 +1,5 @@
 import 'package:final_project/models/job_model.dart';
+import 'package:final_project/style/typography.dart';
 import 'package:flutter/material.dart';
 
 class JobGridCard extends StatelessWidget {
@@ -23,16 +24,16 @@ class JobGridCard extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Image.network(job.companyLogo, width: 30, height: 30),
+              Image.network(job.companyLogo, width: 41, height: 41),
               Icon(Icons.bookmark_border, color: Colors.grey),
             ],
           ),
-          SizedBox(height: 8),
-          Text(job.jobTitle, style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold)),
+          SizedBox(height: 12),
+          Text(job.jobTitle, style: AppTextStyles.jobTittle.copyWith(color: Colors.black)),
           SizedBox(height: 4),
-          Text("${job.companyName} - ${job.jobGeo}}", style: TextStyle(fontSize: 12, color: Colors.grey)),
+          Text("${job.companyName} - ${job.jobGeo}}", style: AppTextStyles.jobText.copyWith(color: Colors.grey)),
           SizedBox(height: 4),
-          Text("${job.salaryCurrency} ${job.annualSalaryMin}-${job.annualSalaryMax}", style: TextStyle(fontSize: 12, fontWeight: FontWeight.w600)),
+          Text("${job.salaryCurrency} ${job.annualSalaryMin}-${job.annualSalaryMax}", style: AppTextStyles.jobText.copyWith(color: Colors.grey)),
         ],
       ),
     );

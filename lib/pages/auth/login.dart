@@ -53,30 +53,40 @@ class AuthScreen extends StatelessWidget {
             ),
             const SizedBox(height: 20),
             // Input Fields
-            CustomInput(
-              hintText: "Email",
-              controller: controller.emailController,
-            ),
-            const SizedBox(height: 15),
-            CustomInput(
-              hintText: "Password",
-              isPassword: true,
-              controller: controller.passwordController,
-            ),
-            const SizedBox(height: 15),
-            Obx(() => controller.isRegister.value
-                ? CustomInput(
+            Obx(() => Column(
+              children: [
+                if (controller.isRegister.value) ...[
+                  CustomInput(
+                    hintText: "Nama",
+                    controller: controller.nameController,
+                  ),
+                  const SizedBox(height: 15),
+                ],
+                CustomInput(
+                  hintText: "Email",
+                  controller: controller.emailController,
+                ),
+                const SizedBox(height: 15),
+                CustomInput(
+                  hintText: "Password",
+                  isPassword: true,
+                  controller: controller.passwordController,
+                ),
+                const SizedBox(height: 15),
+                if (controller.isRegister.value) ...[
+                  CustomInput(
                     hintText: "Confirm Password",
                     isPassword: true,
                     controller: controller.confirmPasswordController,
-                  )
-                : Container()),
-            const SizedBox(height: 20),
-            // Sign Up / Login Button
-            Obx(() => CustomButton(
+                  ),
+                  const SizedBox(height: 20),
+                ],
+                CustomButton(
                   text: controller.isRegister.value ? "Sign Up" : "Login",
                   onPressed: () => controller.handleAuth(),
-                )),
+                ),
+              ],
+            )),
             const SizedBox(height: 10),
           ],
         ),

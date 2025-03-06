@@ -4,6 +4,7 @@ import 'package:final_project/config/job_api.dart';
 import 'package:final_project/models/job_model.dart';
 import 'package:final_project/style/color_style.dart';
 import 'package:final_project/style/typography.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -15,11 +16,22 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   List<Job> popularJobs = [];
   bool isPopularLoading = true;
+  TextEditingController searchController = TextEditingController();
+  String searchQuery = "";
+  User? user;
 
   @override
   void initState() {
     super.initState();
     fetchPopularJobs();
+    getCurrentUser();
+  }
+
+  void getCurrentUser() {
+    FirebaseAuth auth = FirebaseAuth.instance;
+    setState(() {
+      user = auth.currentUser;
+    });
   }
 
   Future<void> fetchPopularJobs() async {
@@ -40,7 +52,7 @@ class _HomePageState extends State<HomePage> {
           body: SingleChildScrollView(
             child: Column(
               children: [
-                SizedBox(height: 50),
+                SizedBox(height: 25),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 25),
                   child: Column(
@@ -48,11 +60,10 @@ class _HomePageState extends State<HomePage> {
                       Row(
                         children: [
                           Text("Hello,", style: AppTextStyles.home),
-                          
-                          Text("Nama", style: AppTextStyles.home.copyWith(fontWeight: FontWeight.w600, color: Colors.black)),
+                          SizedBox(width: 10),
+                          Text( user?.displayName ?? "User", style: AppTextStyles.home.copyWith(fontWeight: FontWeight.w600, color: Colors.black)),
                         ],
                       ),
-                      SizedBox(width: 10),
                       Row(
                         children: [
                           Text("Find Your Great Job", style: AppTextStyles.homeTittle),
@@ -63,14 +74,25 @@ class _HomePageState extends State<HomePage> {
                     ],
                   ),
                 ),
-                SizedBox(height: 36),
+                SizedBox(height: 22),
                 Consumer<JobApi>(
                   builder: (context, viewModel, child) {
+                    List<Job> filteredJobs = viewModel.jobs.where((job) {
+                      return job.jobTitle.toLowerCase().contains(searchQuery.toLowerCase()) ||
+                            job.jobLevel.toLowerCase().contains(searchQuery.toLowerCase());
+                    }).toList();
+                    
                     return Column(
                       children: [
                         Padding(
                           padding: const EdgeInsets.all(16.0),
                           child: TextField(
+                            controller: searchController,
+                            onChanged: (value) {
+                              setState(() {
+                                searchQuery = value;
+                              });
+                            },
                             decoration: InputDecoration(
                               hintText: "Search a Job",
                               prefixIcon: Icon(Icons.search),
@@ -80,6 +102,7 @@ class _HomePageState extends State<HomePage> {
                             ),
                           ),
                         ),
+                        
                         SizedBox(height: 22),
                         Text("Most Popular", style: AppTextStyles.homeTittle.copyWith(color: Colors.black)),
                         SizedBox(height: 12),
@@ -98,14 +121,13 @@ class _HomePageState extends State<HomePage> {
                                       },
                                     ),
                         ),
-
-                        // Caregory
-                        SizedBox(height: 22),
+                        SizedBox(height: 12),
                         SingleChildScrollView(
                           scrollDirection: Axis.horizontal,
                           child: Row(
                             children: viewModel.categoryUrls.keys.map((category) {
                               return Padding(
+                                
                                 padding: const EdgeInsets.symmetric(horizontal: 8.0),
                                 child: ElevatedButton(
                                   onPressed: () {
@@ -117,16 +139,17 @@ class _HomePageState extends State<HomePage> {
                                       borderRadius: BorderRadius.circular(8),
                                     ),
                                   ),
-                                  child: Text(category, style: TextStyle(color: Colors.white)),
+                                  child: Text(category, 
+                                  style: AppTextStyles.jobTittle.copyWith(color: viewModel.selectedCategory == category? Colors.white : Colors.white)),
                                 ),
                               );
                             }).toList(),
                           ),
                         ),
-                        SizedBox(height: 17),
+                        SizedBox(height: 22),
                         viewModel.isLoading
                             ? Center(child: CircularProgressIndicator())
-                            : viewModel.jobs.isEmpty
+                            : filteredJobs.isEmpty
                                 ? Center(child: Text("No jobs found"))
                                 : Padding(
                                     padding: const EdgeInsets.symmetric(horizontal: 16.0),
@@ -134,14 +157,14 @@ class _HomePageState extends State<HomePage> {
                                       shrinkWrap: true,
                                       physics: NeverScrollableScrollPhysics(),
                                       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                                        crossAxisCount: 2, // 2 cards per row
+                                        crossAxisCount: 2,
                                         crossAxisSpacing: 10,
                                         mainAxisSpacing: 10,
                                         childAspectRatio: 0.9,
                                       ),
-                                      itemCount: viewModel.jobs.length,
+                                      itemCount: filteredJobs.length,
                                       itemBuilder: (context, index) {
-                                        final job = viewModel.jobs[index];
+                                        final job = filteredJobs[index];
                                         return JobGridCard(job: job);
                                       },
                                     ),
