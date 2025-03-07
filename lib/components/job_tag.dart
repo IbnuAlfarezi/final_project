@@ -1,4 +1,5 @@
 import 'package:final_project/style/color_style.dart';
+import 'package:final_project/style/typography.dart';
 import 'package:flutter/material.dart';
 
 class JobTag extends StatelessWidget {
@@ -9,13 +10,16 @@ class JobTag extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(right: 8),
       padding: EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+      margin: EdgeInsets.only(right: 5),
       decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(4),
+        color: AppColors.mainColor, 
+        borderRadius: BorderRadius.circular(5), 
       ),
-      child: Text(text, style: TextStyle(color: AppColors.mainColor)),
+      child: Text(
+        text,
+        style: AppTextStyles.jobTittle
+      ),
     );
   }
 }

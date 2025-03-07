@@ -1,6 +1,7 @@
 class Job {
   int id;
   String jobSlug;
+  String url;
   String jobTitle;
   String companyName;
   String companyLogo;
@@ -17,6 +18,7 @@ class Job {
 
   Job({
     required this.id,
+    required this.url,
     required this.jobSlug,
     required this.jobTitle,
     required this.companyName,
@@ -36,6 +38,7 @@ class Job {
   factory Job.fromJson(Map<String, dynamic> json) {
     return Job(
       id: json['id'],
+      url : json['url'],
       jobSlug: json['jobSlug'],
       jobTitle: json['jobTitle'],
       companyName: json['companyName'],

@@ -1,3 +1,4 @@
+import 'package:final_project/components/bottom_bar.dart';
 import 'package:final_project/components/job_card.dart';
 import 'package:final_project/components/job_grid_card.dart';
 import 'package:final_project/config/job_api.dart';
@@ -6,6 +7,7 @@ import 'package:final_project/style/color_style.dart';
 import 'package:final_project/style/typography.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 
 class HomePage extends StatefulWidget {
@@ -117,7 +119,12 @@ class _HomePageState extends State<HomePage> {
                                       itemCount: popularJobs.length,
                                       itemBuilder: (context, index) {
                                         final job = popularJobs[index];
-                                        return JobCard(job: job);
+                                        return GestureDetector(
+                                          onTap: () {
+                                            Get.toNamed('/detail', arguments: {'jobId': job.id});
+                                          },
+                                          child: JobCard(job: job),
+                                        );
                                       },
                                     ),
                         ),
@@ -160,12 +167,17 @@ class _HomePageState extends State<HomePage> {
                                         crossAxisCount: 2,
                                         crossAxisSpacing: 10,
                                         mainAxisSpacing: 10,
-                                        childAspectRatio: 0.9,
+                                        childAspectRatio: 0.85,
                                       ),
                                       itemCount: filteredJobs.length,
                                       itemBuilder: (context, index) {
                                         final job = filteredJobs[index];
-                                        return JobGridCard(job: job);
+                                        return GestureDetector(
+                                          onTap: () {
+                                            Get.toNamed('/detail', arguments: {'jobId': job.id});
+                                          },
+                                          child: JobGridCard(job: job),
+                                        );
                                       },
                                     ),
                                   ),
@@ -176,6 +188,7 @@ class _HomePageState extends State<HomePage> {
               ],
             ),
           ),
+          bottomNavigationBar: BottomBar(),
         ),
       ),
     );
