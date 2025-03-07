@@ -43,7 +43,7 @@ class MainApp extends StatelessWidget {
         initialRoute: AppRoutes.welcome,
         theme: ThemeData(scaffoldBackgroundColor: Colors.white),
         getPages: AppRoutes.routes,
-        home: AuthScreen(),
+        home: SplashScreen(),
       ),
     );
   }
